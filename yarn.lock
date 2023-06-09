@@ -158,6 +158,23 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@prisma/client@^4.15.0":
+  version "4.15.0"
+  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-4.15.0.tgz#f52ec6ca6fbde37395a54b0a9e5da603a9de15f3"
+  integrity sha512-xnROvyABcGiwqRNdrObHVZkD9EjkJYHOmVdlKy1yGgI+XOzvMzJ4tRg3dz1pUlsyhKxXGCnjIQjWW+2ur+YXuw==
+  dependencies:
+    "@prisma/engines-version" "4.15.0-28.8fbc245156db7124f997f4cecdd8d1219e360944"
+
+"@prisma/engines-version@4.15.0-28.8fbc245156db7124f997f4cecdd8d1219e360944":
+  version "4.15.0-28.8fbc245156db7124f997f4cecdd8d1219e360944"
+  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-4.15.0-28.8fbc245156db7124f997f4cecdd8d1219e360944.tgz#8d880becf996cffe08c78ad5afab6bc06090c990"
+  integrity sha512-sVOig4tjGxxlYaFcXgE71f/rtFhzyYrfyfNFUsxCIEJyVKU9rdOWIlIwQ2NQ7PntvGnn+x0XuFo4OC1jvPJKzg==
+
+"@prisma/engines@4.15.0":
+  version "4.15.0"
+  resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-4.15.0.tgz#d8687a9fda615fab88b75b466931280289de9e26"
+  integrity sha512-FTaOCGs0LL0OW68juZlGxFtYviZa4xdQj/rQEdat2txw0s3Vu/saAPKjNVXfIgUsGXmQ72HPgNr6935/P8FNAA==
+
 "@sapphire/async-queue@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@sapphire/async-queue/-/async-queue-1.5.0.tgz#2f255a3f186635c4fb5a2381e375d3dfbc5312d8"
@@ -211,7 +228,7 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
 
-"@types/node@*":
+"@types/node@*", "@types/node@^20.2.5":
   version "20.2.5"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.2.5.tgz#26d295f3570323b2837d322180dfbf1ba156fefb"
   integrity sha512-JJulVEQXmiY9Px5axXHeYGLSjhkZEnD+MDPDGbCbIAbMslkKwmygtZFy1X6s/075Yo94sf8GuSlFfPzysQrWZQ==
@@ -1530,6 +1547,13 @@ prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
+
+prisma@^4.15.0:
+  version "4.15.0"
+  resolved "https://registry.yarnpkg.com/prisma/-/prisma-4.15.0.tgz#4faa94f0d584828b68468953ff0bc88f37912c8c"
+  integrity sha512-iKZZpobPl48gTcSZVawLMQ3lEy6BnXwtoMj7hluoGFYu2kQ6F9LBuBrUyF95zRVnNo8/3KzLXJXJ5TEnLSJFiA==
+  dependencies:
+    "@prisma/engines" "4.15.0"
 
 pstree.remy@^1.1.8:
   version "1.1.8"
