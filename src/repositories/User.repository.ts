@@ -27,6 +27,15 @@ class UserRepository {
       },
     });
   }
+
+  findWinnerRank() {
+    return prisma.user.findMany({
+      take: 3,
+      orderBy: {
+        wins: 'desc',
+      },
+    });
+  }
 }
 
 export default new UserRepository();
