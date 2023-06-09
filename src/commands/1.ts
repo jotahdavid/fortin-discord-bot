@@ -1,17 +1,21 @@
 import { ICommand } from '../command';
-
-const wins = new Map<string, number>();
+import UserRepository from '../repositories/User.repository';
 
 export default {
   name: '1',
   async execute(client, msg) {
-    let userWins = wins.get(msg.author.id);
-    if (!userWins) {
-      wins.set(msg.author.id, 0);
-      userWins = 0;
+    const user = await UserRepository.findById(msg.author.id);
+    if (!user) {
+      await UserRepository.create({
+        id: msg.author.id,
+        wins: 1,
+      });
+    } else {
+      await UserRepository.updateWins(msg.author.id, user.wins + 1);
     }
-    userWins += 1;
-    wins.set(msg.author.id, userWins);
+
+    const userWins = user ? user.wins + 1 : 1;
+
     msg.channel.send(`Nossa o ${msg.author} é muito bom, acabou de ganhar mais uma no Fortnite, já são ${userWins} vitórias!`);
   },
 } as ICommand;
