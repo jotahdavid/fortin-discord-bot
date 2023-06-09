@@ -11,7 +11,7 @@ import {
 } from 'discord.js';
 import { ICommand } from './command';
 
-const { BOT_TOKEN } = process.env;
+const { BOT_TOKEN, CHANNEL_ID } = process.env;
 
 if (!BOT_TOKEN) {
   throw new Error('Insira a váriavel "BOT_TOKEN"!');
@@ -58,7 +58,7 @@ client.on(Events.MessageCreate, async (msg) => {
   const args = msg.content.trim().slice('+'.length).split(/ +/g);
   const commandName = args.shift()?.toLowerCase();
 
-  if (!commandName) return;
+  if (!commandName || (CHANNEL_ID && msg.channelId !== CHANNEL_ID)) return;
 
   const command = client.commands.get(commandName);
 
