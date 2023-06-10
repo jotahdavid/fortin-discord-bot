@@ -3,12 +3,14 @@ import fs from 'fs';
 
 import 'dotenv/config';
 import {
+  ActivityType,
   ChannelType,
   Client,
   Collection,
   Events,
   GatewayIntentBits,
 } from 'discord.js';
+
 import { ICommand } from './command';
 
 const { BOT_TOKEN, CHANNEL_ID } = process.env;
@@ -44,6 +46,7 @@ commandFiles.forEach(async (file) => {
 
 client.once(Events.ClientReady, (c) => {
   console.log(`Logado como ${c.user.tag}`);
+  c.user.setActivity('Fortnite', { type: ActivityType.Playing });
 });
 
 client.on(Events.MessageCreate, async (msg) => {
