@@ -69,10 +69,13 @@ client.on(Events.MessageCreate, async (msg) => {
 
   const command = client.commands.get(commandName);
 
-  if (command) {
-    console.log(`Comando ${BOT_PREFIX}${commandName} executado!`);
-    command.execute(client, msg, args);
+  if (!command) {
+    await msg.reply(`Comando não encontrado, utilize \`${client.prefix}help\``);
+    return;
   }
+
+  console.log(`Comando ${client.prefix}${commandName} executado!`);
+  command.execute(client, msg, args);
 });
 
 client.login(BOT_TOKEN);
