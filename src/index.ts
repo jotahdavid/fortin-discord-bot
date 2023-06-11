@@ -11,7 +11,8 @@ import {
   GatewayIntentBits,
 } from 'discord.js';
 
-import { ICommand } from './command';
+import { ICommand } from './types/command';
+import { IClient } from './types/client';
 
 const { BOT_TOKEN, CHANNEL_ID, BOT_PREFIX = '+' } = process.env;
 
@@ -26,7 +27,7 @@ const client = new Client({
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.MessageContent,
   ],
-}) as Client & { commands: Collection<string, ICommand> };
+}) as IClient<ICommand>;
 
 client.commands = new Collection<string, ICommand>();
 
@@ -34,10 +35,12 @@ const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath)
   .filter((file) => file.endsWith('.js') || file.endsWith('.ts'));
 
+const isCommand = (value: any): value is ICommand => 'name' in value && 'execute' in value;
+
 commandFiles.forEach(async (file) => {
   const filePath = path.join(commandsPath, file);
-  const command = (await import(filePath)).default as ICommand;
-  if ('name' in command && 'execute' in command) {
+  const command: unknown = (await import(filePath)).default;
+  if (isCommand(command)) {
     client.commands.set(command.name, command);
   } else {
     console.log(`[AVISO] O comando no arquivo "${filePath}" está faltando a propriedade "name" ou "execute".`);

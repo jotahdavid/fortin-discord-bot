@@ -1,4 +1,4 @@
-import { ICommand } from '../command';
+import { ICommand } from '../types/command';
 
 const command: ICommand = {
   name: 'hello',

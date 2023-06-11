@@ -1,4 +1,4 @@
-import { ICommand } from '../command';
+import { ICommand } from '../types/command';
 import UserRepository from '../repositories/User.repository';
 
 export default {
