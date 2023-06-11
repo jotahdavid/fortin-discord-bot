@@ -13,7 +13,7 @@ import {
 
 import { ICommand } from './command';
 
-const { BOT_TOKEN, CHANNEL_ID } = process.env;
+const { BOT_TOKEN, CHANNEL_ID, BOT_PREFIX = '+' } = process.env;
 
 if (!BOT_TOKEN) {
   throw new Error('Insira a váriavel "BOT_TOKEN"!');
@@ -51,14 +51,14 @@ client.once(Events.ClientReady, (c) => {
 
 client.on(Events.MessageCreate, async (msg) => {
   if (
-    !msg.content.trim().startsWith('+')
+    !msg.content.trim().startsWith(BOT_PREFIX)
     || msg.author.bot
     || msg.channel.type === ChannelType.DM
   ) {
     return;
   }
 
-  const args = msg.content.trim().slice('+'.length).split(/ +/g);
+  const args = msg.content.trim().slice(BOT_PREFIX.length).split(/ +/g);
   const commandName = args.shift()?.toLowerCase();
 
   if (!commandName || (CHANNEL_ID && msg.channelId !== CHANNEL_ID)) return;
@@ -66,7 +66,7 @@ client.on(Events.MessageCreate, async (msg) => {
   const command = client.commands.get(commandName);
 
   if (command) {
-    console.log(`Comando +${commandName} executado!`);
+    console.log(`Comando ${BOT_PREFIX}${commandName} executado!`);
     command.execute(client, msg, args);
   }
 });
