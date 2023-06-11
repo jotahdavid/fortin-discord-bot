@@ -1,10 +1,9 @@
 import { ICommand } from '../types/command';
 
-const command: ICommand = {
+export default {
   name: 'hello',
+  description: 'Diz Olá!',
   async execute(client, msg) {
     msg.reply('Olá!');
   },
-};
-
-export default command;
+} as ICommand;

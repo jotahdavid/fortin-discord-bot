@@ -3,6 +3,7 @@ import UserRepository from '../repositories/User.repository';
 
 export default {
   name: 'wins',
+  description: 'Mostra quantidade atual de vitórias do usuário',
   async execute(client, msg, args) {
     const firstArg = args.shift();
 

@@ -3,6 +3,7 @@ import UserRepository from '../repositories/User.repository';
 
 export default {
   name: '1',
+  description: 'Acrescenta uma vitória ao contador de vitórias do usuário',
   async execute(client, msg) {
     const user = await UserRepository.findById(msg.author.id);
     if (!user) {
