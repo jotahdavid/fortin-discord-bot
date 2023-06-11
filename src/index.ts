@@ -30,6 +30,7 @@ const client = new Client({
 }) as IClient<ICommand>;
 
 client.commands = new Collection<string, ICommand>();
+client.prefix = BOT_PREFIX;
 
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath)
@@ -54,14 +55,14 @@ client.once(Events.ClientReady, (c) => {
 
 client.on(Events.MessageCreate, async (msg) => {
   if (
-    !msg.content.trim().startsWith(BOT_PREFIX)
+    !msg.content.trim().startsWith(client.prefix)
     || msg.author.bot
     || msg.channel.type === ChannelType.DM
   ) {
     return;
   }
 
-  const args = msg.content.trim().slice(BOT_PREFIX.length).split(/ +/g);
+  const args = msg.content.trim().slice(client.prefix.length).split(/ +/g);
   const commandName = args.shift()?.toLowerCase();
 
   if (!commandName || (CHANNEL_ID && msg.channelId !== CHANNEL_ID)) return;
