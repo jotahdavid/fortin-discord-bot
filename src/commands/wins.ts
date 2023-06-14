@@ -28,6 +28,10 @@ export default {
               : '---'
           }\n`,
       );
+    } else if (firstArg && /<@\d{18}>/.test(firstArg)) {
+      const userId = firstArg.replace(/\D/g, '');
+      const user = await UserRepository.findById(userId);
+      await msg.reply(`<@${userId}> tem ${user ? user.wins : 0} vitórias no Fortnite!`);
     } else {
       const user = await UserRepository.findById(msg.author.id);
       await msg.reply(`Você tem ${user ? user.wins : 0} vitórias no Fortnite!`);
