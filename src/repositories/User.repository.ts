@@ -34,6 +34,11 @@ class UserRepository {
       orderBy: {
         wins: 'desc',
       },
+      where: {
+        wins: {
+          gt: 0,
+        },
+      },
     });
   }
 }
