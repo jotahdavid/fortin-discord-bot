@@ -1,5 +1,5 @@
-import UserRepository from '../../repositories/User.repository';
-import { ICommand } from '../../types/command';
+import UserRepository from '@/repositories/User.repository';
+import { ICommand } from '@/types/command';
 
 export default {
   name: 'rank',

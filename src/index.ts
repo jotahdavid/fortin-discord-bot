@@ -11,8 +11,8 @@ import {
   GatewayIntentBits,
 } from 'discord.js';
 
-import { ICommand, ICommandFlag } from './types/command';
-import { IClient } from './types/client';
+import { ICommand, ICommandFlag } from '@/types/command';
+import { IClient } from '@/types/client';
 
 const { BOT_TOKEN, CHANNEL_ID, BOT_PREFIX = '+' } = process.env;
 

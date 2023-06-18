@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --build",
+    "build": "tsc --build && tsc-alias",
     "start": "npm run build && node ./dist/index.js",
     "dev": "nodemon --transpile-only ./src/index.ts"
   },
@@ -24,6 +24,7 @@
     "nodemon": "^2.0.22",
     "prisma": "^4.15.0",
     "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.6",
     "typescript": "^5.1.3"
   }
 }

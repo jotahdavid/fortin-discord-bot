@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
 
-import prisma from '../services/prisma';
+import prisma from '@/services/prisma';
 
 class UserRepository {
   findById(userId: string) {

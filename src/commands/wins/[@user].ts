@@ -1,5 +1,5 @@
-import UserRepository from '../../repositories/User.repository';
-import { ICommandFlag } from '../../types/command';
+import { ICommandFlag } from '@/types/command';
+import UserRepository from '@/repositories/User.repository';
 
 export default {
   name: '[@user]',
