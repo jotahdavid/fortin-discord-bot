@@ -13,6 +13,6 @@ export default {
     if (!firstArg) return;
     const userId = firstArg.replace(/\D/g, '');
     const user = await UserRepository.findById(userId);
-    await msg.reply(`<@${userId}> tem ${user ? user.wins : 0} vitórias no Fortnite!`);
+    await msg.reply(`<@${userId}> tem ${user ? user.wins : 0} ${user?.wins === 1 ? 'vitória' : 'vitórias'} no Fortnite!`);
   },
 } as ICommandFlag;
