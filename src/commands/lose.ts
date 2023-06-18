@@ -17,6 +17,6 @@ export default {
 
     const userWins = user && user.wins > 0 ? user.wins - 1 : 0;
 
-    msg.channel.send(`${msg.author} acaba de perder uma vitória no Fortnite, restando ${userWins} vitórias!`);
+    msg.channel.send(`${msg.author} acaba de perder uma vitória no Fortnite, restando **${userWins} vitórias!**`);
   },
 } as ICommand;
