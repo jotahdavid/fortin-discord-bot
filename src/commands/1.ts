@@ -17,6 +17,11 @@ export default {
 
     const userWins = user ? user.wins + 1 : 1;
 
-    msg.channel.send(`Nossa o ${msg.author} é muito bom, acabou de ganhar mais uma no Fortnite, já são ${userWins} vitórias!`);
+    if (userWins === 1) {
+      msg.channel.send(`:trophy: ${msg.author} acaba de ganhar sua primeira partida no Fortnite!`);
+      return;
+    }
+
+    msg.channel.send(`:trophy: ${msg.author} acaba de ganhar mais uma no Fortnite, já são **${userWins} vitórias!**`);
   },
 } as ICommand;
