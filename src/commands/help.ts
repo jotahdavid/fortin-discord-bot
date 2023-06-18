@@ -5,10 +5,16 @@ export default {
   name: 'help',
   description: 'Mostra todos os comandos disponíveis',
   async execute(client, msg) {
-    const commandFields = client.commands.map((command) => ({
-      name: `\`${client.prefix}${command.name}\``,
-      value: command.description,
-    }));
+    const commandFields = client.commands
+      .map((command, slug) => ({
+        name: `\`${client.prefix}${slug.replace('.', ' ')}\``,
+        value: command.description,
+      }))
+      .sort((commandA, commandB) => {
+        if (commandA.name < commandB.name) return -1;
+        if (commandA.name > commandB.name) return 1;
+        return 0;
+      });
 
     const embed = new EmbedBuilder()
       .setColor(msg.member?.displayHexColor ?? null)
