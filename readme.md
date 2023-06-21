@@ -26,9 +26,9 @@ Coloque-o no seu Discord (sugerimos que crie uma sala dedicada somente para o bo
 
 Todos os comandos iniciam-se com `+`
 
-- O comando "+hello" contabiliza uma vitória no contador.
-- O comando "+stats [seu_nick_epic_aqui]" mostra estatísticas da sua conta nesta temporada do Fortnite;
-- O comando "+wins [seu_nick_epic_aqui]" mostra vitórias de usuário mencionado;
+- O comando `+hello` contabiliza uma vitória no contador.
+- O comando `+stats [seu_nick_epic_aqui]` mostra estatísticas da sua conta nesta temporada do Fortnite;
+- O comando `+wins [seu_nick_epic_aqui]` mostra vitórias da sua conta nesta temporada do Fortnite;
 
 ## Contribuição
 
