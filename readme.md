@@ -6,7 +6,7 @@
 - ✅ [Utilização](#utilização)
 - 🤝 [Contribuição](#contribuição)
 
-<br>
+<br><br><br>
 
 ## 🛠️ Instalação
 
@@ -16,7 +16,7 @@ Para a instação é o padrão mesmo:
 npm install
 ```
 
-<br>
+<br><br><br>
 
 ## ✅ Utilização
 
@@ -30,11 +30,17 @@ Coloque-o no seu Discord (sugerimos que crie uma sala dedicada somente para o bo
 
 Todos os comandos iniciam-se com `+`
 
-- O comando `+hello` contabiliza uma vitória no contador.
+Ps: Tudo que está em colchetes [] você ignora na hora de digitar no Discord.
+
+- O comando `+hello` o simpático bot dá um "Oi" (=.
+- O comando `+help` mostra todos os comandos do bot;
 - O comando `+stats [seu_nick_epic_aqui]` mostra estatísticas da sua conta nesta temporada do Fortnite;
 - O comando `+wins [seu_nick_epic_aqui]` mostra vitórias da sua conta nesta temporada do Fortnite;
+- O comando `+wins [@seu_nick_do_discord_aqui]` mostra vitórias da sua conta nesta temporada do Fortnite;
+- O comando `+wins rank` mostra rank de vitórias dos 3 melhores jogadores do servidor (desde que eles tenham se cadastrado no bot);
+- O comando `+wins` mostra a atual quantidade de vitórias do usuário;
 
-<br>
+<br><br><br>
 
 ## 🤝 Contribuição
 
