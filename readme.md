@@ -2,11 +2,11 @@
 
 ## Índice
 
-- [Instalação](#instalação)
-- [Contribuição](#contribuição)
-- [Utilização](#utilização)
+- 🛠️ [Instalação](#instalação)
+- ✅ [Utilização](#utilização)
+- 🤝 [Contribuição](#contribuição)
 
-## Instalação
+## 🛠️ Instalação
 
 Para a instação é o padrão mesmo:
 
@@ -14,7 +14,7 @@ Para a instação é o padrão mesmo:
 npm install
 ```
 
-## Utilização
+## ✅ Utilização
 
 Para utilizar esse bot, basta entrar nesse link 👇
 
@@ -30,7 +30,7 @@ Todos os comandos iniciam-se com `+`
 - O comando `+stats [seu_nick_epic_aqui]` mostra estatísticas da sua conta nesta temporada do Fortnite;
 - O comando `+wins [seu_nick_epic_aqui]` mostra vitórias da sua conta nesta temporada do Fortnite;
 
-## Contribuição
+## 🤝 Contribuição
 
 Curtiu o projeto? Gostaríamos muito da sua contribuição! Se você tem alguma sugestão de melhoria para uma funcionalidade existente ou pensa em adicionar uma nova feature, ajude a tornar este projeto ainda melhor. Aqui estão algumas orientações para contribuir:
 
