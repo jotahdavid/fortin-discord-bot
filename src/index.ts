@@ -56,6 +56,7 @@ const commandFiles = getAllFiles(commandsPath)
     slug: filePath
       .replace(path.join(__dirname, 'commands'), '')
       .replace(/^\/|^\\|\.js|\.ts|(\/?|\\?)index/g, '')
+      .replace(/\.{3}/g, '_spread_')
       .replace(/\/|\\/g, '.'),
   }));
 
@@ -75,13 +76,14 @@ client.once(Events.ClientReady, (c) => {
   c.user.setActivity('Fortnite', { type: ActivityType.Playing });
 });
 
+const isSpread = (value: string) => /\[_spread_(\w|@)+\]/.test(value);
 const isWildcard = (value: string) => /\[(\w|@)+\]/.test(value);
 
 function matchSlug(slug: string, commandSlug: string) {
   const slugItems = slug.split('.');
   const commandItems = commandSlug.split('.');
 
-  if (slugItems.length !== commandItems.length) {
+  if (slugItems.length !== commandItems.length && !slugItems.some(isSpread)) {
     return false;
   }
 
