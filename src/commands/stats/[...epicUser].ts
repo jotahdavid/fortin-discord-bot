@@ -27,7 +27,7 @@ export default {
       + `:crown: VITÓRIAS: **${fortniteAccount.wins}**\n\n`
       + `:skull_crossbones: KILLS: **${fortniteAccount.kills}**\n\n`
       + `:video_game: TOTAL DE PARTIDAS: **${fortniteAccount.matches}**\n\n`
-      + `:shopping_bags: PASSE DE BATALHA PROGRESSO: **${fortniteAccount.battlePass.progress}**`,
+      + `:shopping_bags: NÍVEL PASSE DE BATALHA: **${fortniteAccount.battlePass.level}**`,
     );
   },
 } as ICommandFlag;
