@@ -6,7 +6,7 @@
 - ✅ [Utilização](#utilização)
 - 🤝 [Contribuição](#contribuição)
 
-<br><br><br>
+<br>
 
 ## 🛠️ Instalação
 
@@ -16,7 +16,7 @@ Para a instação é o padrão mesmo:
 npm install
 ```
 
-<br><br><br>
+<br>
 
 ## ✅ Utilização
 
@@ -40,7 +40,7 @@ Ps: Tudo que está em colchetes [] você ignora na hora de digitar no Discord.
 - O comando `+wins rank` mostra rank de vitórias dos 3 melhores jogadores do servidor (desde que eles tenham se cadastrado no bot);
 - O comando `+wins` mostra a atual quantidade de vitórias do usuário;
 
-<br><br><br>
+<br>
 
 ## 🤝 Contribuição
 
