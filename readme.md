@@ -1,10 +1,12 @@
 # Bot para contar as vitórias de Fortnite
 
-## Índice
+## 📃 Índice
 
 - 🛠️ [Instalação](#instalação)
 - ✅ [Utilização](#utilização)
 - 🤝 [Contribuição](#contribuição)
+
+<br>
 
 ## 🛠️ Instalação
 
@@ -13,6 +15,8 @@ Para a instação é o padrão mesmo:
 ```
 npm install
 ```
+
+<br>
 
 ## ✅ Utilização
 
@@ -29,6 +33,8 @@ Todos os comandos iniciam-se com `+`
 - O comando `+hello` contabiliza uma vitória no contador.
 - O comando `+stats [seu_nick_epic_aqui]` mostra estatísticas da sua conta nesta temporada do Fortnite;
 - O comando `+wins [seu_nick_epic_aqui]` mostra vitórias da sua conta nesta temporada do Fortnite;
+
+<br>
 
 ## 🤝 Contribuição
 
