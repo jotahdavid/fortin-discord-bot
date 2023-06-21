@@ -24,8 +24,11 @@ Coloque-o no seu Discord (sugerimos que crie uma sala dedicada somente para o bo
 
 ### Comandos
 
-- O comando "+1" contabiliza uma vitória no contador.
-- O comando "win rank" exibe o ranking dos 3 melhores jogadores do servidor.
+Todos os comandos iniciam-se com `+`
+
+- O comando "+hello" contabiliza uma vitória no contador.
+- O comando "+stats [seu_nick_epic_aqui]" mostra estatísticas da sua conta nesta temporada do Fortnite;
+- O comando "+wins [seu_nick_epic_aqui]" mostra vitórias de usuário mencionado;
 
 ## Contribuição
 
