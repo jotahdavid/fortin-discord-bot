@@ -1,3 +1,4 @@
+import { EmbedBuilder } from 'discord.js';
 import { ICommandFlag } from '@/types/command';
 import FortniteAccountRepository from '@/repositories/FortniteAccount.repository';
 
@@ -22,12 +23,26 @@ export default {
       return;
     }
 
-    msg.channel.send(
-      `**📊 ESTATÍSTICAS DO USUÁRIO \`${fortniteAccount.account.name}\`**\n\n`
-      + `:crown: VITÓRIAS: **${fortniteAccount.wins}**\n\n`
-      + `:skull_crossbones: KILLS: **${fortniteAccount.kills}**\n\n`
-      + `:video_game: TOTAL DE PARTIDAS: **${fortniteAccount.matches}**\n\n`
-      + `:shopping_bags: NÍVEL PASSE DE BATALHA: **${fortniteAccount.battlePass.level}**`,
-    );
+    const hoursPlayed = Math.floor(fortniteAccount.minutesPlayed / 60);
+    const minutesPlayed = Math.floor((fortniteAccount.minutesPlayed / 60 - hoursPlayed) * 60);
+
+    const timePlayed = minutesPlayed > 0
+      ? `${hoursPlayed}h${String(minutesPlayed).padStart(2, '0')}m`
+      : `${hoursPlayed}h`;
+
+    const embed = new EmbedBuilder()
+      .setAuthor({ name: `Player: ${fortniteAccount.account.name}` })
+      .setTitle('📊 ESTATÍSTICAS DA SEASON ATUAL')
+      .addFields([
+        { name: '\u200B', value: `:video_game: TOTAL DE PARTIDAS: **${fortniteAccount.matches}**` },
+        { name: '\u200B', value: `:crown: VITÓRIAS: **${fortniteAccount.wins}**` },
+        { name: '\u200B', value: `:chart_with_upwards_trend: WINRATE: **${fortniteAccount.winRate}%**` },
+        { name: '\u200B', value: `:skull_crossbones: KILLS: **${fortniteAccount.kills}**` },
+        { name: '\u200B', value: `:shopping_bags: NÍVEL PASSE DE BATALHA: **${fortniteAccount.battlePass.level}**` },
+        { name: '\u200B', value: `:stopwatch: TEMPO DE JOGO: **${timePlayed}**` },
+      ])
+      .setTimestamp();
+
+    msg.channel.send({ embeds: [embed] });
   },
 } as ICommandFlag;
