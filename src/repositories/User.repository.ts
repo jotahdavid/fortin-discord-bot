@@ -17,6 +17,18 @@ class UserRepository {
     });
   }
 
+  update(userId: string, updatedUser: Omit<User, 'id'>) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        ...updatedUser,
+        id: undefined,
+      },
+    });
+  }
+
   updateWins(userId: string, wins: number) {
     return prisma.user.update({
       where: {
@@ -24,6 +36,7 @@ class UserRepository {
       },
       data: {
         wins,
+        winsUpdatedAt: new Date(),
       },
     });
   }
