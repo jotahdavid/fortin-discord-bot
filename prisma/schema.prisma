@@ -11,6 +11,8 @@ datasource db {
 }
 
 model User {
-  id   String @id
-  wins Int
+  id            String   @id
+  wins          Int
+  epicUsername  String?  @map("epic_username")
+  winsUpdatedAt DateTime @default(now()) @map("wins_updated_at")
 }
