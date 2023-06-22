@@ -3,6 +3,10 @@ import { User } from '@prisma/client';
 import prisma from '@/services/prisma';
 
 class UserRepository {
+  findAll() {
+    return prisma.user.findMany();
+  }
+
   findById(userId: string) {
     return prisma.user.findUnique({
       where: {
@@ -39,6 +43,18 @@ class UserRepository {
         winsUpdatedAt: new Date(),
       },
     });
+  }
+
+  updateManyWins(users: Array<{ id: string, wins: number }>) {
+    return prisma.$transaction(
+      users.map((user) => prisma.user.update({
+        where: { id: user.id },
+        data: {
+          wins: user.wins,
+          winsUpdatedAt: new Date(),
+        },
+      })),
+    );
   }
 
   findWinnerRank() {

@@ -1,10 +1,34 @@
+import FortniteAccountRepository from '@/repositories/FortniteAccount.repository';
 import UserRepository from '@/repositories/User.repository';
 import { ICommand } from '@/types/command';
+
+const FIVE_MINUTES_IN_MS = 5 * 60 * 1000;
+
+let lastTimeCommandTrigger = new Date(0);
 
 export default {
   name: 'rank',
   description: 'Mostra rank de vitórias',
   async execute(client, msg) {
+    if (Date.now() - lastTimeCommandTrigger.getTime() > FIVE_MINUTES_IN_MS) {
+      const users = await UserRepository.findAll();
+      const filteredUsers = users.filter((user) => (
+        user.epicUsername && user.winsUpdatedAt
+        && Date.now() - new Date(user.winsUpdatedAt).getTime() > FIVE_MINUTES_IN_MS
+      ));
+      const fortniteAccountPromises = filteredUsers.map((user) => (
+        FortniteAccountRepository.findByUsername(user.epicUsername!)
+      ));
+      const fortniteAccounts = await Promise.all(fortniteAccountPromises);
+      const updatedUsers = fortniteAccounts.reduce(
+        (acc, account, index) => (
+          account ? acc.concat({ id: users[index].id, wins: account.wins }) : acc
+        ),
+        [] as Array<{ id: string; wins: number; }>,
+      );
+      await UserRepository.updateManyWins(updatedUsers);
+    }
+
     const rank = await UserRepository.findWinnerRank();
     const formattedDate = new Intl.DateTimeFormat('pt-BR').format(new Date());
 
@@ -26,5 +50,7 @@ export default {
             : '---'
         }`,
     );
+
+    lastTimeCommandTrigger = new Date();
   },
 } as ICommand;
