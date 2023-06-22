@@ -8,7 +8,7 @@ export default {
   async execute(client, msg) {
     const commandFields = client.commands
       .map((command, slug) => ({
-        name: `\`${client.prefix}${slug.replace('.', ' ').replace('_spread_', '...')}\``,
+        name: `\`${client.prefix}${slug.replace('.', ' ').replace('_spread_', '')}\``,
         value: command.description,
       }))
       .sort((commandA, commandB) => {
