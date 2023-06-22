@@ -1,4 +1,6 @@
-# Bot para contar as vitórias de Fortnite
+# Bot Fortin | Discord
+
+![Fortin Logo](.github/fortin1.png)
 
 ## 📃 Índice
 
