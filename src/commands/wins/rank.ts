@@ -22,7 +22,7 @@ export default {
       const fortniteAccounts = await Promise.all(fortniteAccountPromises);
       const updatedUsers = fortniteAccounts.reduce(
         (acc, account, index) => (
-          account ? acc.concat({ id: users[index].id, wins: account.wins }) : acc
+          account && 'wins' in account ? acc.concat({ id: users[index].id, wins: account.wins }) : acc
         ),
         [] as Array<{ id: string; wins: number; }>,
       );

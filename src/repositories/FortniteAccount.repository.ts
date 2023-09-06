@@ -41,6 +41,10 @@ interface FortniteApiResponse {
 
 }
 
+interface FortniteApiResponseError {
+  error: string;
+}
+
 type ForniteUserStats = FortniteApiResponse['data']['stats']['all']['overall'];
 
 interface ForniteAccountInfo extends ForniteUserStats {
@@ -48,13 +52,24 @@ interface ForniteAccountInfo extends ForniteUserStats {
   battlePass: FortniteApiResponse['data']['battlePass']
 }
 
+interface ForniteAccountError {
+  error: string;
+  code: string;
+}
+
 const isFortniteApiResponse = (value: any): value is FortniteApiResponse => (
   'status' in value && 'data' in value && 'stats' in value.data && 'all' in value.data.stats
   && 'overall' in value.data.stats.all
 );
 
+const isFortniteApiResponseError = (value: any): value is FortniteApiResponseError => (
+  'error' in value
+);
+
 class FortniteAccountRepository {
-  async findByUsername(username: string): Promise<ForniteAccountInfo | null> {
+  async findByUsername(
+    username: string,
+  ): Promise<ForniteAccountInfo | ForniteAccountError | null> {
     if (!FORTNITE_API_URL || !FORTNITE_API_TOKEN) {
       throw new Error('Estão faltando as variáveis de ambientes: FORNITE_API_URL ou FORTNITE_API_TOKEN');
     }
@@ -66,6 +81,10 @@ class FortniteAccountRepository {
     });
 
     const data = await response.json() as FortniteApiResponse;
+
+    if (isFortniteApiResponseError(data)) {
+      return { error: 'Player não jogou nenhuma partida na última season', code: 'USER_NO_HISTORY' };
+    }
 
     if (!isFortniteApiResponse(data)) {
       return null;
