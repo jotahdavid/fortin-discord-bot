@@ -21,6 +21,15 @@ export default {
         return;
       }
 
+      if ('error' in fortniteAccount) {
+        if (fortniteAccount.code === 'USER_NO_HISTORY') {
+          msg.reply(`:no_entry: O player ${user.epicUsername} não jogou nenhuma partida na última season!`);
+          return;
+        }
+        msg.reply(':no_entry: Algum erro inesperado aconteceu!');
+        return;
+      }
+
       user = await UserRepository.updateWins(user.id, fortniteAccount.wins);
     }
 

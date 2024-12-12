@@ -9,22 +9,31 @@ import {
   Collection,
   Events,
   GatewayIntentBits,
+  REST,
+  RESTPostAPIChatInputApplicationCommandsJSONBody,
+  Routes,
 } from 'discord.js';
 import Schedule from 'node-schedule';
 
 import { ICommand, ICommandFlag } from '@/types/command';
 import { IClient } from '@/types/client';
+import { ISlashCommand } from './types/slashCommand';
 import AramPlayerRepository from './repositories/AramPlayer.repository';
 
 const {
   BOT_TOKEN,
   CHANNEL_ID,
+  CLIENT_ID,
   ARAM_CHANNEL_ID,
   BOT_PREFIX = '+',
 } = process.env;
 
 if (!BOT_TOKEN) {
   throw new Error('Insira a váriavel "BOT_TOKEN"!');
+}
+
+if (!CLIENT_ID) {
+  throw new Error('Insira a váriavel "CLIENT_ID"!');
 }
 
 const client = new Client({
@@ -34,9 +43,10 @@ const client = new Client({
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.MessageContent,
   ],
-}) as IClient<ICommand | ICommandFlag>;
+}) as IClient<ICommand | ICommandFlag, ISlashCommand>;
 
 client.commands = new Collection<string, ICommand>();
+client.slashCommands = new Collection<string, ISlashCommand>();
 client.prefix = BOT_PREFIX;
 
 function getAllFiles(dirPath: string, arrayOfFiles: string[] | null = null) {
@@ -147,6 +157,70 @@ client.on(Events.MessageCreate, async (msg) => {
 
   await msg.reply(`Comando não encontrado, utilize \`${client.prefix}help\``);
 });
+
+const slashCommandsPath = path.join(__dirname, 'slashCommands');
+const slashCommandFiles = getAllFiles(slashCommandsPath)
+  .filter((filePath) => filePath.endsWith('.js') || filePath.endsWith('.ts'))
+  .map((filePath) => ({
+    path: filePath,
+    slug: filePath
+      .replace(path.join(__dirname, 'slashCommands'), '')
+      .replace(/^\/|^\\|\.js|\.ts|(\/?|\\?)index/g, '')
+      .replace(/\.{3}/g, '_spread_')
+      .replace(/\/|\\/g, '.'),
+  }));
+
+const isSlashCommand = (value: any): value is ISlashCommand => 'data' in value && 'execute' in value;
+
+(async () => {
+  const slashCommands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const file of slashCommandFiles) {
+    // eslint-disable-next-line no-await-in-loop
+    const slashCommand: unknown = (await import(file.path)).default;
+    if (isSlashCommand(slashCommand)) {
+      slashCommands.push(slashCommand.data.toJSON());
+      client.slashCommands.set(file.slug, slashCommand);
+    } else {
+      console.log(`[AVISO] O comando no arquivo "${file.path}" está faltando a propriedade "name" ou "execute".`);
+    }
+  }
+
+  const rest = new REST().setToken(BOT_TOKEN);
+
+  try {
+    console.log(`Started refreshing ${slashCommands.length} application (/) commands.`);
+
+    await rest.put(
+      Routes.applicationCommands(CLIENT_ID),
+      { body: slashCommands },
+    );
+
+    console.log(`Successfully reloaded ${slashCommands.length} application (/) commands.`);
+  } catch (error) {
+    console.error(error);
+  }
+
+  client.on(Events.InteractionCreate, async (interaction) => {
+    if (!interaction.isChatInputCommand()) return;
+
+    const command = client.slashCommands.get(interaction.commandName);
+
+    if (!command) return;
+
+    try {
+      await command.execute(interaction);
+    } catch (error) {
+      console.error(error);
+      if (interaction.replied || interaction.deferred) {
+        await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+      } else {
+        await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+      }
+    }
+  });
+})();
 
 const scheduleRule = new Schedule.RecurrenceRule();
 scheduleRule.hour = 12;

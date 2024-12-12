@@ -23,6 +23,15 @@ export default {
       return;
     }
 
+    if ('error' in fortniteAccount) {
+      if (fortniteAccount.code === 'USER_NO_HISTORY') {
+        msg.reply(`:no_entry: O player ${username} não jogou nenhuma partida na última season!`);
+        return;
+      }
+      msg.reply(':no_entry: Algum erro inesperado aconteceu!');
+      return;
+    }
+
     const hoursPlayed = Math.floor(fortniteAccount.minutesPlayed / 60);
     const minutesPlayed = Math.floor((fortniteAccount.minutesPlayed / 60 - hoursPlayed) * 60);
 

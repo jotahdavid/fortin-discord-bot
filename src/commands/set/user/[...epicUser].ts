@@ -31,6 +31,15 @@ export default {
       return;
     }
 
+    if ('error' in fortniteAccount) {
+      if (fortniteAccount.code === 'USER_NO_HISTORY') {
+        msg.reply(`:no_entry: O player ${username} não jogou nenhuma partida na última season!`);
+        return;
+      }
+      msg.reply(':no_entry: Algum erro inesperado aconteceu!');
+      return;
+    }
+
     try {
       if (!user) {
         await UserRepository.create({
