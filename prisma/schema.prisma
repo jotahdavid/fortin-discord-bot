@@ -16,3 +16,8 @@ model User {
   epicUsername  String?   @map("epic_username")
   winsUpdatedAt DateTime? @map("wins_updated_at")
 }
+
+model AramPlayer {
+  id   String  @id
+  name String?
+}

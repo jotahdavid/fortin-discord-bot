@@ -13,13 +13,19 @@ import {
   RESTPostAPIChatInputApplicationCommandsJSONBody,
   Routes,
 } from 'discord.js';
+import Schedule from 'node-schedule';
 
 import { ICommand, ICommandFlag } from '@/types/command';
 import { IClient } from '@/types/client';
 import { ISlashCommand } from './types/slashCommand';
+import AramPlayerRepository from './repositories/AramPlayer.repository';
 
 const {
-  BOT_TOKEN, CLIENT_ID, CHANNEL_ID, BOT_PREFIX = '+',
+  BOT_TOKEN,
+  CHANNEL_ID,
+  CLIENT_ID,
+  ARAM_CHANNEL_ID,
+  BOT_PREFIX = '+',
 } = process.env;
 
 if (!BOT_TOKEN) {
@@ -215,5 +221,33 @@ const isSlashCommand = (value: any): value is ISlashCommand => 'data' in value &
     }
   });
 })();
+
+const scheduleRule = new Schedule.RecurrenceRule();
+scheduleRule.hour = 12;
+scheduleRule.minute = 0;
+scheduleRule.tz = 'America/Sao_Paulo';
+
+Schedule.scheduleJob(scheduleRule, async () => {
+  if (!ARAM_CHANNEL_ID) return;
+
+  const channel = await client.channels.fetch(ARAM_CHANNEL_ID);
+
+  if (!channel) return;
+
+  const files = [];
+
+  if (process.env.ARAM_IMAGE_URL) {
+    files.push(process.env.ARAM_IMAGE_URL);
+  }
+
+  const aramPlayers = await AramPlayerRepository.findAll();
+
+  if ('send' in channel) {
+    channel.send({
+      content: aramPlayers.map((aramPlayer) => `<@${aramPlayer.id}>`).join(' '),
+      files,
+    });
+  }
+});
 
 client.login(BOT_TOKEN);
