@@ -4,7 +4,7 @@ class AramPlayerRepository {
   findAll() {
     return prisma.aramPlayer.findMany({
       orderBy: {
-        order: 'asc',
+        name: 'asc',
       },
     });
   }

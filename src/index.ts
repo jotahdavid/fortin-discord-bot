@@ -10,11 +10,18 @@ import {
   Events,
   GatewayIntentBits,
 } from 'discord.js';
+import Schedule from 'node-schedule';
 
 import { ICommand, ICommandFlag } from '@/types/command';
 import { IClient } from '@/types/client';
+import AramPlayerRepository from './repositories/AramPlayer.repository';
 
-const { BOT_TOKEN, CHANNEL_ID, BOT_PREFIX = '+' } = process.env;
+const {
+  BOT_TOKEN,
+  CHANNEL_ID,
+  ARAM_CHANNEL_ID,
+  BOT_PREFIX = '+',
+} = process.env;
 
 if (!BOT_TOKEN) {
   throw new Error('Insira a váriavel "BOT_TOKEN"!');
@@ -139,6 +146,34 @@ client.on(Events.MessageCreate, async (msg) => {
   }
 
   await msg.reply(`Comando não encontrado, utilize \`${client.prefix}help\``);
+});
+
+const scheduleRule = new Schedule.RecurrenceRule();
+scheduleRule.hour = 12;
+scheduleRule.minute = 0;
+scheduleRule.tz = 'America/Sao_Paulo';
+
+Schedule.scheduleJob(scheduleRule, async () => {
+  if (!ARAM_CHANNEL_ID) return;
+
+  const channel = await client.channels.fetch(ARAM_CHANNEL_ID);
+
+  if (!channel) return;
+
+  const files = [];
+
+  if (process.env.ARAM_IMAGE_URL) {
+    files.push(process.env.ARAM_IMAGE_URL);
+  }
+
+  const aramPlayers = await AramPlayerRepository.findAll();
+
+  if ('send' in channel) {
+    channel.send({
+      content: aramPlayers.map((aramPlayer) => `<@${aramPlayer.id}>`).join(' '),
+      files,
+    });
+  }
 });
 
 client.login(BOT_TOKEN);
