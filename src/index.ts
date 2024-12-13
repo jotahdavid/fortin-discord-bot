@@ -25,6 +25,8 @@ const {
   CHANNEL_ID,
   CLIENT_ID,
   ARAM_CHANNEL_ID,
+  ARAM_SCHEDULE_HOUR,
+  ARAM_SCHEDULE_MINUTE,
   BOT_PREFIX = '+',
 } = process.env;
 
@@ -223,8 +225,8 @@ const isSlashCommand = (value: any): value is ISlashCommand => 'data' in value &
 })();
 
 const scheduleRule = new Schedule.RecurrenceRule();
-scheduleRule.hour = 12;
-scheduleRule.minute = 0;
+scheduleRule.hour = ARAM_SCHEDULE_HOUR ?? 11;
+scheduleRule.minute = ARAM_SCHEDULE_MINUTE ?? 50;
 scheduleRule.tz = 'America/Sao_Paulo';
 
 Schedule.scheduleJob(scheduleRule, async () => {
