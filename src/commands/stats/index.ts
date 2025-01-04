@@ -1,33 +1,33 @@
 import { EmbedBuilder } from 'discord.js';
-import { ICommandFlag } from '@/types/command';
+
+import { ICommand } from '@/types/command';
 import FortniteAccountRepository from '@/repositories/FortniteAccount.repository';
+import UserRepository from '@/repositories/User.repository';
 
 export default {
-  name: '[...epicUser]',
-  description: 'Mostra estatísticas no Fortnite do usuário mencionado',
-  validator(args) {
-    const firstArg = args.shift();
-    return Boolean(firstArg);
-  },
-  async execute(client, msg, args) {
-    const username = args.join(' ');
-    if (!username) {
-      msg.reply(':no_entry: Informe um nome de usuário!');
+  name: 'stats',
+  description: 'Mostra estatísticas sobre a conta no Fornite do usuário',
+  async execute(client, msg) {
+    const user = await UserRepository.findById(msg.author.id);
+
+    if (!user?.epicUsername) {
+      msg.reply(`:no_entry: Você não tem uma conta do Fortnite atrelada! Use o comando \`${client.prefix}set user [epicUser]\``);
       return;
     }
 
-    const fortniteAccount = await FortniteAccountRepository.findByUsername(username);
+    const fortniteAccount = await FortniteAccountRepository.findByUsername(user.epicUsername);
 
     if (!fortniteAccount) {
-      msg.reply(':no_entry: Usuário não encontrado!');
+      msg.reply(`:no_entry: A conta "${user.epicUsername}" não foi encontrada!`);
       return;
     }
 
     if ('error' in fortniteAccount) {
       if (fortniteAccount.code === 'USER_NO_HISTORY') {
-        msg.reply(`:no_entry: O player ${username} não jogou nenhuma partida na última season!`);
+        msg.reply(`:no_entry: O player ${user.epicUsername} não jogou nenhuma partida na última season!`);
         return;
       }
+
       msg.reply(':no_entry: Algum erro inesperado aconteceu!');
       return;
     }
@@ -54,4 +54,4 @@ export default {
 
     msg.channel.send({ embeds: [embed] });
   },
-} as ICommandFlag;
+} as ICommand;

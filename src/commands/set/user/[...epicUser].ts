@@ -4,7 +4,7 @@ import UserRepository from '@/repositories/User.repository';
 
 export default {
   name: '[...epicUser]',
-  description: 'Mostra estatísticas sobre a conta no Fornite',
+  description: 'Atrela a conta da Epic ao usuário que executou o comando',
   validator(args) {
     const secondArg = args[1];
     return Boolean(secondArg);
