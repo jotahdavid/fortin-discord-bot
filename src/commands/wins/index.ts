@@ -10,10 +10,17 @@ export default {
   async execute(client, msg) {
     let user = await UserRepository.findById(msg.author.id);
 
-    if (
-      user?.winsUpdatedAt && user.epicUsername
+    if (!user?.epicUsername) {
+      msg.reply(`:no_entry: Você não tem uma conta do Fortnite atrelada! Use o comando \`${client.prefix}set user [epicUser]\``);
+      return;
+    }
+
+    const lastWinsUpdateWasFiveMinutesAgo = (
+      user?.winsUpdatedAt
       && Date.now() - new Date(user.winsUpdatedAt).getTime() > FIVE_MINUTES_IN_MS
-    ) {
+    );
+
+    if (lastWinsUpdateWasFiveMinutesAgo) {
       const fortniteAccount = await FortniteAccountRepository.findByUsername(user.epicUsername);
 
       if (!fortniteAccount) {
@@ -26,6 +33,7 @@ export default {
           msg.reply(`:no_entry: O player ${user.epicUsername} não jogou nenhuma partida na última season!`);
           return;
         }
+
         msg.reply(':no_entry: Algum erro inesperado aconteceu!');
         return;
       }
@@ -37,6 +45,7 @@ export default {
       await msg.reply(':trophy: Você tem atualmente **1 vitória** na season atual do Fortnite!');
       return;
     }
+
     await msg.reply(`:trophy: Você tem **${user ? user.wins : 0} vitórias** na season atual do Fortnite!`);
   },
 } as ICommand;
