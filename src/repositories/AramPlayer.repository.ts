@@ -1,3 +1,4 @@
+import { AramPlayer } from '@prisma/client';
 import prisma from '@/services/prisma';
 
 class AramPlayerRepository {
@@ -6,6 +7,20 @@ class AramPlayerRepository {
       orderBy: {
         name: 'asc',
       },
+    });
+  }
+
+  findById(aramPlayerId: string) {
+    return prisma.aramPlayer.findUnique({
+      where: {
+        id: aramPlayerId,
+      },
+    });
+  }
+
+  create(newAramPlayer: AramPlayer) {
+    return prisma.aramPlayer.create({
+      data: newAramPlayer,
     });
   }
 }
