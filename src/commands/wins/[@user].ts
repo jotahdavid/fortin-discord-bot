@@ -25,10 +25,12 @@ export default {
       return;
     }
 
-    if (
-      user.winsUpdatedAt
+    const lastWinsUpdateWasFiveMinutesAgo = (
+      user?.winsUpdatedAt
       && Date.now() - new Date(user.winsUpdatedAt).getTime() > FIVE_MINUTES_IN_MS
-    ) {
+    );
+
+    if (lastWinsUpdateWasFiveMinutesAgo) {
       const fortniteAccount = await FortniteAccountRepository.findByUsername(user.epicUsername);
 
       if (!fortniteAccount) {
