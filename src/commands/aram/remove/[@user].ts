@@ -3,10 +3,9 @@ import { ICommandFlag } from '@/types/command';
 
 export default {
   name: '[@user]',
-  description: 'Adiciona usuário a lista de players do ARAM',
+  description: 'Remove usuário da lista de players do ARAM',
   validator(args) {
     const [, secondArg] = args;
-
     return secondArg && /<@\d{18}>/.test(secondArg);
   },
   async execute(client, msg, args) {
@@ -16,29 +15,17 @@ export default {
     const userId = secondArg.replace(/\D/g, '');
     const aramPlayer = await AramPlayerRepository.findById(userId);
 
-    if (aramPlayer) {
+    if (!aramPlayer) {
       msg.reply(
-        `:no_entry: <@${userId}> já está na lista do ARAM!`,
+        `:no_entry: <@${userId}> não está na lista do ARAM!`,
       );
       return;
     }
 
-    const discordUser = await client.users.fetch(userId);
-
-    if (!discordUser) {
-      msg.reply(
-        ':no_entry: Não foi possível encontrar o usuário mencionado',
-      );
-      return;
-    }
-
-    await AramPlayerRepository.create({
-      id: userId,
-      name: discordUser.displayName,
-    });
+    await AramPlayerRepository.deleteById(userId);
 
     msg.reply(
-      `:white_check_mark: Adicionado <@${discordUser.id}> na lista do ARAM!`,
+      `:white_check_mark: Removido <@${userId}> na lista do ARAM!`,
     );
   },
 } as ICommandFlag;

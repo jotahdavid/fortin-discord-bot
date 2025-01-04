@@ -23,6 +23,14 @@ class AramPlayerRepository {
       data: newAramPlayer,
     });
   }
+
+  deleteById(aramPlayerId: string) {
+    return prisma.aramPlayer.delete({
+      where: {
+        id: aramPlayerId,
+      },
+    });
+  }
 }
 
 export default new AramPlayerRepository();
