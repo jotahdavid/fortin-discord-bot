@@ -85,6 +85,15 @@ commandFiles.forEach(async (file) => {
   const command: unknown = (await import(file.path)).default;
   if (isCommand(command)) {
     client.commands.set(file.slug, command);
+
+    command.aliases?.forEach((alias) => {
+      const lastCommandNameIndex = file.slug.lastIndexOf(command.name);
+      const aliasSlug = file.slug.slice(0, lastCommandNameIndex)
+        + alias
+        + file.slug.slice(lastCommandNameIndex + 1 + command.name.length);
+
+      client.commands.set(aliasSlug, command);
+    });
   } else {
     console.log(`[AVISO] O comando no arquivo "${file.path}" está faltando a propriedade "name" ou "execute".`);
   }
