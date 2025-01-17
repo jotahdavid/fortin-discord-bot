@@ -25,7 +25,7 @@ export default {
     await AramPlayerRepository.deleteById(userId);
 
     msg.reply(
-      `:white_check_mark: Removido <@${userId}> na lista do ARAM!`,
+      `:white_check_mark: Removido <@${userId}> da lista do ARAM!`,
     );
   },
 } as ICommandFlag;

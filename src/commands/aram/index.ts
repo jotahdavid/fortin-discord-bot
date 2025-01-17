@@ -4,6 +4,7 @@ import { ICommand } from '@/types/command';
 export default {
   name: 'aram',
   description: 'Envia foto do ARAM',
+  aliases: ['flex'],
   async execute(client, msg) {
     const files = [];
 
