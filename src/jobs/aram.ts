@@ -1,4 +1,5 @@
 import { RecurrenceRule } from 'node-schedule';
+
 import { IJob } from '@/types/job';
 import AramPlayerRepository from '@/repositories/AramPlayer.repository';
 
@@ -10,11 +11,11 @@ schedule.tz = 'America/Sao_Paulo';
 export default {
   schedule,
   async execute(client) {
-    const { ARAM_CHANNEL_ID } = process.env;
+    const { JOB_CHANNEL_ID } = process.env;
 
-    if (!ARAM_CHANNEL_ID) return;
+    if (!JOB_CHANNEL_ID) return;
 
-    const channel = await client.channels.fetch(ARAM_CHANNEL_ID);
+    const channel = await client.channels.fetch(JOB_CHANNEL_ID);
 
     if (!channel) return;
 

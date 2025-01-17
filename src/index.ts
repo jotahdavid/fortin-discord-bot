@@ -213,6 +213,6 @@ const isSlashCommand = (value: any): value is ISlashCommand => 'data' in value &
   });
 })();
 
-prepareJobs(client);
-
 client.login(BOT_TOKEN);
+
+prepareJobs(client);
