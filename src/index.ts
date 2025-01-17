@@ -1,5 +1,4 @@
 import path from 'path';
-import fs from 'fs';
 
 import 'dotenv/config';
 import {
@@ -13,20 +12,17 @@ import {
   RESTPostAPIChatInputApplicationCommandsJSONBody,
   Routes,
 } from 'discord.js';
-import Schedule from 'node-schedule';
 
 import { ICommand, ICommandFlag } from '@/types/command';
 import { IClient } from '@/types/client';
-import { ISlashCommand } from './types/slashCommand';
-import AramPlayerRepository from './repositories/AramPlayer.repository';
+import { ISlashCommand } from '@/types/slashCommand';
+import { prepareJobs } from '@/jobs';
+import { getAllFiles } from '@/helpers/getAllFiles';
 
 const {
   BOT_TOKEN,
   CHANNEL_ID,
   CLIENT_ID,
-  ARAM_CHANNEL_ID,
-  ARAM_SCHEDULE_HOUR,
-  ARAM_SCHEDULE_MINUTE,
   BOT_PREFIX = '+',
 } = process.env;
 
@@ -50,22 +46,6 @@ const client = new Client({
 client.commands = new Collection<string, ICommand>();
 client.slashCommands = new Collection<string, ISlashCommand>();
 client.prefix = BOT_PREFIX;
-
-function getAllFiles(dirPath: string, arrayOfFiles: string[] | null = null) {
-  const files = fs.readdirSync(dirPath);
-
-  let result = arrayOfFiles ? [...arrayOfFiles] : [];
-
-  files.forEach((file) => {
-    if (fs.statSync(path.join(dirPath, file)).isDirectory()) {
-      result = getAllFiles(path.join(dirPath, file), result);
-    } else {
-      result.push(path.join(dirPath, file));
-    }
-  });
-
-  return result;
-}
 
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = getAllFiles(commandsPath)
@@ -233,32 +213,6 @@ const isSlashCommand = (value: any): value is ISlashCommand => 'data' in value &
   });
 })();
 
-const scheduleRule = new Schedule.RecurrenceRule();
-scheduleRule.hour = ARAM_SCHEDULE_HOUR ?? 11;
-scheduleRule.minute = ARAM_SCHEDULE_MINUTE ?? 50;
-scheduleRule.tz = 'America/Sao_Paulo';
-
-Schedule.scheduleJob(scheduleRule, async () => {
-  if (!ARAM_CHANNEL_ID) return;
-
-  const channel = await client.channels.fetch(ARAM_CHANNEL_ID);
-
-  if (!channel) return;
-
-  const files = [];
-
-  if (process.env.ARAM_IMAGE_URL) {
-    files.push(process.env.ARAM_IMAGE_URL);
-  }
-
-  const aramPlayers = await AramPlayerRepository.findAll();
-
-  if ('send' in channel) {
-    channel.send({
-      content: aramPlayers.map((aramPlayer) => `<@${aramPlayer.id}>`).join(' '),
-      files,
-    });
-  }
-});
+prepareJobs(client);
 
 client.login(BOT_TOKEN);
