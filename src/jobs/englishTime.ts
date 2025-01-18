@@ -14,7 +14,7 @@ export default {
 
     if (!JOB_CHANNEL_ID || !ENGLISH_VOICE_CHANNEL_ID) return;
 
-    const voiceChannel = await client.channels.fetch(ENGLISH_VOICE_CHANNEL_ID);
+    const voiceChannel = await client.channels.fetch(ENGLISH_VOICE_CHANNEL_ID, { cache: false, force: true });
     const channel = await client.channels.fetch(JOB_CHANNEL_ID);
 
     if (!voiceChannel || !channel) return;

@@ -40,6 +40,7 @@ const client = new Client({
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildVoiceStates,
   ],
 }) as IClient<ICommand | ICommandFlag, ISlashCommand>;
 
@@ -213,6 +214,7 @@ const isSlashCommand = (value: any): value is ISlashCommand => 'data' in value &
   });
 })();
 
-client.login(BOT_TOKEN);
-
-prepareJobs(client);
+client.login(BOT_TOKEN)
+  .then(() => {
+    prepareJobs(client);
+  });
