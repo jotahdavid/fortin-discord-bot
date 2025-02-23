@@ -6,11 +6,19 @@ export default {
   name: 'help',
   description: 'Mostra todos os comandos disponíveis',
   async execute(client, msg) {
-    const commandFields = client.commands
+    const slashCommands = client.slashCommands
+      .map((command) => ({
+        name: `\`/${command.data.name}\``,
+        value: command.data.description,
+      }));
+
+    const commands = client.commands
       .map((command, slug) => ({
         name: `\`${client.prefix}${slug.replace(/\./g, ' ').replace(/_spread_/g, '')}\``,
         value: command.description,
-      }))
+      }));
+
+    const commandFields = [...slashCommands, ...commands]
       .sort((commandA, commandB) => {
         if (commandA.name < commandB.name) return -1;
         if (commandA.name > commandB.name) return 1;
