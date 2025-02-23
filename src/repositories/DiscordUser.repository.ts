@@ -1,4 +1,4 @@
-import { DiscordUser, PlayersOnGames } from '@prisma/client';
+import { DiscordUser } from '@prisma/client';
 
 import prisma from '@/services/prisma';
 
