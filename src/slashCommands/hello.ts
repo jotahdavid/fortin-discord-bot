@@ -6,7 +6,6 @@ export default {
     .setName('hello')
     .setDescription('Diz olá!'),
   async execute(interaction) {
-    if (!interaction.isCommand()) return;
     await interaction.reply('Olá!');
   },
 } as ISlashCommand;

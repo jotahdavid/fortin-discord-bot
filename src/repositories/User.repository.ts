@@ -28,7 +28,6 @@ class UserRepository {
       },
       data: {
         ...updatedUser,
-        id: undefined,
       },
     });
   }
