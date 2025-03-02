@@ -141,10 +141,10 @@ client.on(Events.MessageCreate, async (msg) => {
   }
 
   const commands = client.commands.filter((cmd, key) => 'validator' in cmd && matchSlug(key, slug)) as Collection<string, ICommandFlag>;
-  const comandWildcard = commands.find((commandFlag) => commandFlag.validator([...args]));
+  const commandWildcard = commands.find((commandFlag) => commandFlag.validator([...args]));
 
-  if (comandWildcard) {
-    comandWildcard.execute(client, msg, args);
+  if (commandWildcard) {
+    commandWildcard.execute(client, msg, args);
     return;
   }
 
