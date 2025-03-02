@@ -19,6 +19,10 @@ export function prepareJobs(client: IClient<ICommand | ICommandFlag, ISlashComma
   const isJob = (value: any): value is IJob => value !== undefined && 'schedule' in value && 'execute' in value;
 
   jobsFiles.forEach(async (file) => {
+    if (file.path === __filename) {
+      return;
+    }
+
     const job: unknown = (await import(file.path)).default;
     if (isJob(job)) {
       Schedule.scheduleJob(job.schedule, () => job.execute(client));

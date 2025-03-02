@@ -15,9 +15,44 @@ model User {
   wins          Int
   epicUsername  String?   @map("epic_username")
   winsUpdatedAt DateTime? @map("wins_updated_at")
+
+  @@map("users")
 }
 
-model AramPlayer {
-  id   String  @id
-  name String?
+model Game {
+  id                     Int         @id @default(autoincrement())
+  createdBy              DiscordUser @relation(fields: [createdByDiscordUserId], references: [id])
+  createdByDiscordUserId String      @map("created_by_discord_user_id")
+  name                   String
+  imageUrl               String
+  createdAt              DateTime    @default(now()) @map("created_at")
+  updatedAt              DateTime    @updatedAt @map("updated_at")
+
+  playersOnGames PlayersOnGames[]
+
+  @@map("games")
+}
+
+model DiscordUser {
+  id        String   @id
+  name      String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  playersOnGames PlayersOnGames[]
+  games          Game[]
+
+  @@map("discord_users")
+}
+
+model PlayersOnGames {
+  game          Game        @relation(fields: [gameId], references: [id])
+  gameId        Int         @map("game_id")
+  player        DiscordUser @relation(fields: [discordUserId], references: [id])
+  discordUserId String      @map("discord_user_id")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  @@id([gameId, discordUserId])
+  @@map("players_on_games")
 }
