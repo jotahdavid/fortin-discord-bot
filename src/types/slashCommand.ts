@@ -1,7 +1,7 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
+import { AutocompleteInteraction, ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 
 export interface ISlashCommand {
   data: SlashCommandBuilder,
-  aliases?: string[];
-  execute(interaction: ChatInputCommandInteraction): Promise<unknown>;
+  execute: (interaction: ChatInputCommandInteraction) => Promise<unknown>;
+  autocomplete?: (interaction: AutocompleteInteraction) => Promise<unknown>;
 }

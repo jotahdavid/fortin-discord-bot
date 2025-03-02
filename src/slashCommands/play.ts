@@ -12,11 +12,12 @@ export default {
         .setDescription('Nome do jogo.')
         .setRequired(true)
         .setMaxLength(255)
+        .setAutocomplete(true)
     )),
   async execute(interaction) {
     const gameSearch = interaction.options.getString('game', true);
 
-    const game = await GameRepository.searchByName(gameSearch);
+    const game = await GameRepository.searchByName(gameSearch, true);
 
     if (!game) {
       await interaction.reply({ content: `Não foi possível achar o jogo **${gameSearch}**.`, flags: MessageFlags.Ephemeral });
@@ -32,5 +33,22 @@ export default {
         files: [game.imageUrl],
       });
     }
+  },
+  async autocomplete(interaction) {
+    const focusedOption = interaction.options.getFocused(true);
+    const search = focusedOption.value.trim();
+    let choices: string[] = [];
+
+    if (focusedOption.name === 'game') {
+      const gamesFound = search
+        ? await GameRepository.searchByName(search)
+        : await GameRepository.findAll(10);
+
+      choices = gamesFound.map((game) => game.name);
+    }
+
+    await interaction.respond(
+      choices.map((choice) => ({ name: choice, value: choice })),
+    );
   },
 } as ISlashCommand;

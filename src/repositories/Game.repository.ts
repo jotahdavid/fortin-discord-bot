@@ -1,10 +1,16 @@
-import { Game } from '@prisma/client';
+import { Game, PlayersOnGames } from '@prisma/client';
 
 import prisma from '@/services/prisma';
 
+interface GameWithPlayersOnGames extends Game {
+  playersOnGames: PlayersOnGames[];
+}
+
 class GameRepository {
-  findAll() {
-    return prisma.game.findMany();
+  findAll(limit?: number) {
+    return prisma.game.findMany({
+      take: limit,
+    });
   }
 
   findById(gameId: number) {
@@ -15,8 +21,27 @@ class GameRepository {
     });
   }
 
-  searchByName(gameName: string) {
-    return prisma.game.findFirst({
+  async searchByName<T extends boolean = false>(
+    gameName: string,
+    onlyFirst?: T,
+  ): Promise<T extends true ? GameWithPlayersOnGames | null : GameWithPlayersOnGames[]> {
+    const isOnlyFirst = onlyFirst ?? false;
+
+    if (isOnlyFirst) {
+      return await prisma.game.findFirst({
+        where: {
+          name: {
+            contains: gameName,
+            mode: 'insensitive',
+          },
+        },
+        include: {
+          playersOnGames: true,
+        },
+      }) as T extends true ? GameWithPlayersOnGames | null : GameWithPlayersOnGames[];
+    }
+
+    return await prisma.game.findMany({
       where: {
         name: {
           contains: gameName,
@@ -26,7 +51,7 @@ class GameRepository {
       include: {
         playersOnGames: true,
       },
-    });
+    }) as T extends true ? GameWithPlayersOnGames | null : GameWithPlayersOnGames[];
   }
 
   create(newGame: Omit<Game, 'id' | 'createdAt' | 'updatedAt'> & { discordUsers?: string[] }) {

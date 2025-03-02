@@ -33,7 +33,7 @@ export default {
     const gameName = interaction.options.getString('name', true);
     const imageUrl = interaction.options.getString('image', true);
 
-    const game = await GameRepository.searchByName(gameName);
+    const game = await GameRepository.searchByName(gameName, true);
 
     if (action === 'add') {
       if (game) {
@@ -42,7 +42,10 @@ export default {
         return;
       }
 
-      const discordUser = await DiscordUserRepository.firstOrCreate(interaction.user.id);
+      const discordUser = await DiscordUserRepository.firstOrCreate(
+        interaction.user.id,
+        interaction.user.username,
+      );
 
       await GameRepository.create({
         name: gameName,

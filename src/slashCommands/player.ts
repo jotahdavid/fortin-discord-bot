@@ -21,6 +21,7 @@ export default {
         .setDescription('Nome do jogo.')
         .setRequired(true)
         .setMaxLength(255)
+        .setAutocomplete(true)
     ))
     .addUserOption((option) => (
       option.setName('player')
@@ -32,7 +33,7 @@ export default {
     const gameName = interaction.options.getString('game', true);
     const player = interaction.options.getUser('player', true);
 
-    const game = await GameRepository.searchByName(gameName);
+    const game = await GameRepository.searchByName(gameName, true);
 
     if (action === 'add') {
       if (!game) {
@@ -56,5 +57,22 @@ export default {
 
       await interaction.reply({ content: `O jogador <@${player.id}> foi adicionado na lista do jogo **${gameName}** com sucesso!` });
     }
+  },
+  async autocomplete(interaction) {
+    const focusedOption = interaction.options.getFocused(true);
+    const search = focusedOption.value.trim();
+    let choices: string[] = [];
+
+    if (focusedOption.name === 'game') {
+      const gamesFound = search
+        ? await GameRepository.searchByName(search)
+        : await GameRepository.findAll(10);
+
+      choices = gamesFound.map((game) => game.name);
+    }
+
+    await interaction.respond(
+      choices.map((choice) => ({ name: choice, value: choice })),
+    );
   },
 } as ISlashCommand;

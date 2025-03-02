@@ -18,7 +18,7 @@ class DiscordUserRepository {
     });
   }
 
-  firstOrCreate(discordUserId: string) {
+  firstOrCreate(discordUserId: string, discordUserName?: string) {
     return prisma.discordUser.upsert({
       where: {
         id: discordUserId,
@@ -26,6 +26,7 @@ class DiscordUserRepository {
       update: {},
       create: {
         id: discordUserId,
+        name: discordUserName,
       },
       include: {
         playersOnGames: true,
